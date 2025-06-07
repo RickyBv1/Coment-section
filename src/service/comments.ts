@@ -35,7 +35,7 @@ export const getComments = async () => {
 const delay = async (ms: number) =>
   await new Promise((resolve) => setTimeout(resolve, ms));
 
-export const postComments = async (comment: Comment) => {
+export const postComment = async (comment: Comment) => {
   const comments = await getComments();
 
   const id = crypto.randomUUID();

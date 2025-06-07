@@ -1,4 +1,4 @@
-import { CommentWithId } from "../service/comments";
+import { type CommentWithId } from "../service/comments";
 
 export const Results = ({ data }: { data?: CommentWithId[] }) => {
   return (
