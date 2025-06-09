@@ -32,8 +32,8 @@ export const getComments = async () => {
   return json?.record;
 };
 
-const delay = async (ms: number) =>
-  await new Promise((resolve) => setTimeout(resolve, ms));
+// const delay = async (ms: number) =>
+//   await new Promise((resolve) => setTimeout(resolve, ms));
 
 export const postComment = async (comment: Comment) => {
   const comments = await getComments();
@@ -48,7 +48,7 @@ export const postComment = async (comment: Comment) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "X-Access-Key": import.meta.env.VITE_X_MASTER_KEY,
+        "X-Access-Key": apiKey,
       },
       body: JSON.stringify(commentsToSave),
     }

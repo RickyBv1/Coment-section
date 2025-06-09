@@ -10,17 +10,17 @@ import { FormInput, FormTextArea } from "./components/Form";
 import { Results } from "./components/Results";
 
 function App() {
-  const { data, isLoading, error } = useQuery<CommentWithId[]>(
-    ["comments"],
-    getComments
-  );
+  const { data, isLoading, error } = useQuery<CommentWithId[]>({
+    queryKey: ["comments"],
+    queryFn: getComments,
+  });
 
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading: isLoadingMutation } = useMutation({
+  const { mutate, isPending: isLoadingMutation } = useMutation({
     mutationFn: postComment,
     onMutate: async (newComment) => {
-      await queryClient.cancelQueries(["comments"]);
+      await queryClient.cancelQueries({ queryKey: ["comments"] });
 
       const previousComments = queryClient.getQueryData(["comments"]);
 
@@ -37,7 +37,7 @@ function App() {
 
       return { previousComments };
     },
-    onError: (error, variables, context) => {
+    onError: (error, _variables, context) => {
       console.error(error);
       if (context?.previousComments != null) {
         queryClient.setQueryData(["comments"], context.previousComments);
@@ -61,6 +61,7 @@ function App() {
 
     if (title !== "" && message !== "") {
       mutate({ title, message });
+      event.currentTarget.reset();
     }
   };
 
@@ -68,7 +69,7 @@ function App() {
     <main className="grid h-screen grid-cols-2">
       <div className="col-span-1 p-8 bg-white">
         {isLoading && <strong>Loading...</strong>}
-        {error != null && <strong>Something went grong</strong>}
+        {error != null && <strong>Something went wrong</strong>}
         <Results data={data} />
       </div>
 
